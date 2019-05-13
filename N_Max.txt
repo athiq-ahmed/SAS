@@ -1,0 +1,20 @@
+proc sort data=one; 
+by department sales; 
+run; 
+data two; 
+set one; 
+retain department1 ''; 
+retain counter 1; 
+If department1=department then do; 
+counter=counter+1; 
+end; 
+else do; 
+department1=department; 
+counter=1; 
+end; 
+run;     
+data two(drop=department1 counter); 
+set two; 
+if counter=3; 
+run;
+

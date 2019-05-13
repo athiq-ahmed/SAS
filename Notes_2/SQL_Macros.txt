@@ -1,0 +1,37 @@
+proc sql noprint;
+select name,age into :name1,:age1 from sashelp.class;
+%put &name1 &age1;
+quit;
+proc sql noprint;
+select name,max(age) into :name1,:age1 from sashelp.class;
+%put &name1 &age1;
+quit;
+proc sql noprint;
+select name,age into :name1-:name4,:age1-:age4 from sashelp.class;
+%put &name1 &age1;
+%put &name2 &age2;
+%put &name3 &age3;
+%put &name4 &age4;
+quit;
+proc sql noprint inobs =5;
+select name into :name1 separated by ', ' from sashelp.class;
+%put &name1 ;
+quit;
+proc sql noprint inobs =5;
+select name into :name1 separated by ', ' notrim from sashelp.class;
+%put &name1 ;
+quit;
+
+Proc sql;
+create table employee(name char(10),age num,sex char(10));
+%macro add(name,age,sex);
+reset noprint;
+select name,age,sex into :name,:age,:sex from employee where name = "&name" and age = &age and sex = "&sex";;
+insert into employee(name,age,sex) values("&name",&age,"&sex");
+reset print;
+select * from employee ;
+%mend;
+
+%add(a,32,f);
+%add(b,22,m);
+%add(c,33,f);
